@@ -1,9 +1,12 @@
+
+package ant.dice;
+
 public class Dice {
 
-    Dice() {
+    public Dice() {
     }
 
     public String run(int i) {
-        return null;
+        return "toto";
     }
 }
