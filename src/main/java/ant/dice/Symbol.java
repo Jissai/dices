@@ -17,6 +17,10 @@ public class Symbol {
         return id;
     }
 
+    public String getOpposite() {
+        return opposite;
+    }
+
     public boolean isOpposite(Symbol target) {
         return target.getId() == this.opposite;
     }
