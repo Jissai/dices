@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class SymbolResolver {
+public class SymbolResolverStringList implements ISymbolResolver {
 
-    public Map<String, LinkedList<Symbol>> resolve(Collection<Symbol> symbols) {
+    public Map<String, Long> resolve(Collection<Symbol> symbols) {
         Map<String, LinkedList<Symbol>> groupedSymbols = symbols.stream()
                 .collect(Collectors.groupingBy(Symbol::getId, Collectors.toCollection(LinkedList::new)));
 
@@ -23,12 +23,11 @@ public class SymbolResolver {
             }
         }
 
-        Map<String, LinkedList<Symbol>> result = groupedSymbols.entrySet().stream()
+        Map<String, Long> result = groupedSymbols.entrySet().stream()
                 .filter(entry -> !entry.getValue().isEmpty())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> Long.valueOf(e.getValue().size())));
 
         return result;
     }
-
 
 }

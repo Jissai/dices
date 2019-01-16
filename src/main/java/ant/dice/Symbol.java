@@ -1,5 +1,7 @@
 package ant.dice;
 
+import java.util.Objects;
+
 public class Symbol {
     private String id;
     private String opposite;
@@ -23,5 +25,20 @@ public class Symbol {
 
     public boolean isOpposite(Symbol target) {
         return target.getId() == this.opposite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Symbol s = (Symbol)o;
+
+        return Objects.equals(this.id, s.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 }
