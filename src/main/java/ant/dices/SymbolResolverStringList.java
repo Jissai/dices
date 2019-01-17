@@ -1,4 +1,4 @@
-package ant.dice;
+package ant.dices;
 
 import java.util.Collection;
 import java.util.LinkedList;

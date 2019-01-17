@@ -1,7 +1,7 @@
-package ant.dice.test;
+package ant.dices.test;
 
-import ant.dice.Symbol;
-import ant.dice.SymbolResolverSymbolLong;
+import ant.dices.Symbol;
+import ant.dices.SymbolResolverSymbolLong;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
