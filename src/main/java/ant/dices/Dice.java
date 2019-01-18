@@ -1,17 +1,22 @@
-
 package ant.dices;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Dice {
 
-    private HashMap<Integer,Face> faces;
+    private Map<Integer, Face> faces;
 
-    public Dice(HashMap<Integer,Face> faces) {
-        this.faces = faces;
+    public Dice(Face[] faces) {
+        this.faces = new HashMap<>();
+        int index = 0;
+        for (Face face : faces) {
+            this.faces.put(index++, face);
+        }
+
     }
 
-    public HashMap<Integer, Face> getFaces() {
+    public Map<Integer, Face> getFaces() {
         return faces;
     }
 }
