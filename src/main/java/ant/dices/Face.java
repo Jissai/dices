@@ -1,12 +1,12 @@
 package ant.dices;
 
-class Face {
+public class Face {
 
-    static final Face BLANK = new Face(new Symbol[0]);
+    public static final Face BLANK = new Face(new Symbol[0]);
 
     private final Symbol[] symbols;
 
-    Face(Symbol[] symbols) {
+    public Face(Symbol[] symbols) {
         this.symbols = symbols;
     }
 
