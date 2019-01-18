@@ -2,21 +2,18 @@ package ant.dices;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class Dice {
 
-    private Map<Integer, Face> faces;
+    private Map<Integer, Face> faces = new HashMap<>();
 
-    public Dice(Face[] faces) {
-        this.faces = new HashMap<>();
-        int index = 0;
-        for (Face face : faces) {
-            this.faces.put(index++, face);
-        }
-
+    public Dice(final Face[] faces) {
+        Face[] treat = faces != null ? faces : new Face[]{};
+        IntStream.range(0, treat.length).forEachOrdered(idx -> this.faces.put(idx, treat[idx]));
     }
 
     public Map<Integer, Face> getFaces() {
-        return faces;
+        return this.faces;
     }
 }
