@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ISymbolResolverTest {
 
@@ -28,7 +28,7 @@ public class ISymbolResolverTest {
         public void resolve_givenSame_returnsTwo() {
             Collection<Symbol> symbols = Arrays.asList(ga, bu);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
-            assertEquals(2, result.size());
+            assertThat(result).hasSize(2);
         }
 
         @Test
@@ -36,7 +36,7 @@ public class ISymbolResolverTest {
         public void resolve_givenOpposite_returnsEmpty() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
-            assertEquals(0, result.size());
+            assertThat(result).hasSize(0);
         }
 
         @Test
@@ -44,8 +44,8 @@ public class ISymbolResolverTest {
         public void resolve_givenOpposite_returnsRemain() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo, meu);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
-            assertEquals(1, result.size());
-            assertEquals(Long.valueOf(1), result.get("meu"));
+            assertThat(result).hasSize(1);
+            assertThat(result).containsEntry("meu", Long.valueOf(1));
         }
 
         @Test
@@ -53,9 +53,9 @@ public class ISymbolResolverTest {
         public void resolve_givenManyOpposite_returnsRemain() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo, meu, zo);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
-            assertEquals(2, result.size());
-            assertEquals(Long.valueOf(1), result.get("meu"));
-            assertEquals(Long.valueOf(1), result.get("zo"));
+            assertThat(result).hasSize(2);
+            assertThat(result).containsEntry("meu", Long.valueOf(1));
+            assertThat(result).containsEntry("zo", Long.valueOf(1));
         }
     }
 
