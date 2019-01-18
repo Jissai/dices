@@ -15,11 +15,11 @@ public class Symbol {
         this.opposite = opposite;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public String getOpposite() {
+    String getOpposite() {
         return opposite;
     }
 

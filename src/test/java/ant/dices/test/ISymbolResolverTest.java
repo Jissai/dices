@@ -12,11 +12,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ISymbolResolverTest {
+class ISymbolResolverTest {
 
     @Nested
     @DisplayName("resolve")
-    public class method_reolve {
+    class method_reolve {
 
         Symbol ga = new Symbol("ga", "zo");
         Symbol bu = new Symbol("bu");
@@ -25,7 +25,7 @@ public class ISymbolResolverTest {
 
         @Test
         @DisplayName("should return unmodified list when given 2 additive symbols")
-        public void resolve_givenSame_returnsTwo() {
+        void resolve_givenSame_returnsTwo() {
             Collection<Symbol> symbols = Arrays.asList(ga, bu);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
             assertThat(result).hasSize(2);
@@ -33,7 +33,7 @@ public class ISymbolResolverTest {
 
         @Test
         @DisplayName("should return an empty list when given 2 opposite symbols")
-        public void resolve_givenOpposite_returnsEmpty() {
+        void resolve_givenOpposite_returnsEmpty() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
             assertThat(result).hasSize(0);
@@ -41,7 +41,7 @@ public class ISymbolResolverTest {
 
         @Test
         @DisplayName("should return the resulting element(s) when opposition occurs")
-        public void resolve_givenOpposite_returnsRemain() {
+        void resolve_givenOpposite_returnsRemain() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo, meu);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
             assertThat(result).hasSize(1);
@@ -50,7 +50,7 @@ public class ISymbolResolverTest {
 
         @Test
         @DisplayName("should delete only one opposite for an occurence")
-        public void resolve_givenManyOpposite_returnsRemain() {
+        void resolve_givenManyOpposite_returnsRemain() {
             Collection<Symbol> symbols = Arrays.asList(ga, zo, meu, zo);
             Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
             assertThat(result).hasSize(2);
