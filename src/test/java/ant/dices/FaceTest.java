@@ -3,7 +3,7 @@ package ant.dices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class FaceTest {
     @Test
@@ -17,7 +17,14 @@ class FaceTest {
 
         Symbol[] result =   face.getSymbols();
         assertThat(result).containsExactlyInAnyOrder(new Symbol[]{
-                new Symbol("failure","success"),
-                new Symbol("success","failure")});
+                new Symbol("failure"),
+                new Symbol("success")});
+    }
+
+    @Test
+    @DisplayName("should return empty list if no Symbol defined on the face")
+    public void get_retunsEmpty(){
+        Symbol[] result =   Face.BLANK.getSymbols();
+        assertThat(result).isEmpty();
     }
 }
