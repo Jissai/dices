@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class DiceTest {
@@ -38,6 +37,53 @@ public class DiceTest {
     }
 
     @Nested
+    @DisplayName("getNumberOfFaces")
+    public class GetNumberOfFaces {
+        @Test
+        @DisplayName("should return 0 given a null Dice")
+        void getNumberOfFaces_returns0_givenNullDice() {
+            assertThat((new Dice(null)).getNumberOfFaces()).isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("should return 0 given an empty Dice")
+        void getNumberOfFaces_returns0_givenEmptyDice() {
+            assertThat((new Dice(null)).getNumberOfFaces()).isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("should return the correct numbr of faces given a Dice")
+        void getNumberOfFaces_returnsNumberOfFaces_givenDice() {
+            assertThat((new Dice(new Face[]{Face.BLANK, Face.BLANK})).getNumberOfFaces()).isEqualTo(2);
+        }
+    }
+
+    @Nested
+    @DisplayName("getSymbolsOnFace")
+    public class GetSymbolsOnFace {
+        Symbol failure = new Symbol("failure", "success");
+        Symbol menace = new Symbol("menace", "avantage");
+        Face face1 = new Face(new Symbol[]{failure});
+        Face face2 = new Face(new Symbol[]{failure, menace});
+        Dice dice = new Dice(new Face[]{Face.BLANK, face1, face2, Face.BLANK, face1, face2,});
+
+        @Test
+        @DisplayName("should return expected list of symbols for an existing given Face")
+        void getSymbolsOfFaces_returns_symbols() {
+            assertThat(dice.getSymbolsOnFace(2)).hasSize(2).containsExactlyInAnyOrder(face2.getSymbols());
+            assertThat(dice.getSymbolsOnFace(3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getSymbols());
+        }
+
+        @Test
+        @DisplayName("should return the symbols on abs(face % dice.getNumberOfFaces) when given a face beyond limits")
+        void getSymbolsOfFaces_returnsSymbols_givenOutOfRange() {
+            assertThat(dice.getSymbolsOnFace(7)).hasSize(1).containsExactlyInAnyOrder(face1.getSymbols());
+            assertThat(dice.getSymbolsOnFace(-3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getSymbols());
+            assertThat(dice.getSymbolsOnFace(-44)).hasSize(2).containsExactlyInAnyOrder(face2.getSymbols());
+        }
+    }
+
+    @Nested
     @DisplayName("getFaces")
     public class GetFaces {
         @Test
@@ -59,6 +105,14 @@ public class DiceTest {
             Dice dice = new Dice(new Face[0]);
             Map<Integer, Face> result = dice.getFaces();
             assertThat(result).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should not allow modification of faces")
+        void getFaces_unmodifiable() {
+            Dice dice = new Dice(new Face[0]);
+            Map<Integer, Face> result = dice.getFaces();
+            assertThatThrownBy(() -> result.put(1, Face.BLANK)).isInstanceOf(RuntimeException.class);
         }
 
     }

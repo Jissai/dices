@@ -10,7 +10,7 @@ public class Face {
         this.symbols = symbols;
     }
 
-    Symbol[] getSymbols() {
+    public Symbol[] getSymbols() {
         return symbols;
     }
 }
