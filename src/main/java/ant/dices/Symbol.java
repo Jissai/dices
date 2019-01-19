@@ -32,7 +32,7 @@ public class Symbol {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Symbol s = (Symbol)o;
+        Symbol s = (Symbol) o;
 
         return Objects.equals(this.id, s.id);
     }
