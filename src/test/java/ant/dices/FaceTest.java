@@ -1,23 +1,23 @@
 package ant.dices;
 
+import static org.assertj.core.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class FaceTest {
     @Test
     @DisplayName("should return the symbols present on the face")
     void get_symbols() {
 
-        Face face = new Face(new Symbol[]{
-                new Symbol("success", "failure"),
-                new Symbol("failure", "success")}
+        Face face = new Face(new Symbol[] {
+            new Symbol("success", "failure"),
+            new Symbol("failure", "success")}
         );
 
         Symbol[] result = face.getSymbols();
         assertThat(result).containsExactlyInAnyOrder(new Symbol("failure"),
-                new Symbol("success"));
+            new Symbol("success"));
     }
 
     @Test

@@ -29,9 +29,12 @@ public class Symbol {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass())
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         Symbol s = (Symbol) o;
 
         return Objects.equals(this.id, s.id);

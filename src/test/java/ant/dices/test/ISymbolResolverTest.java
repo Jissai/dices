@@ -1,22 +1,21 @@
 package ant.dices.test;
 
+import static org.assertj.core.api.Assertions.*;
+
 import ant.dices.Symbol;
 import ant.dices.SymbolResolverSymbolLong;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class ISymbolResolverTest {
 
     @Nested
     @DisplayName("resolve")
-    class method_reolve {
+    class Resolve {
 
         Symbol ga = new Symbol("ga", "zo");
         Symbol bu = new Symbol("bu");

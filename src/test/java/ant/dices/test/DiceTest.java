@@ -1,21 +1,19 @@
 package ant.dices.test;
 
+import static org.assertj.core.api.Assertions.*;
+
 import ant.dices.Dice;
 import ant.dices.Face;
 import ant.dices.Symbol;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.*;
-
-
 public class DiceTest {
 
     Symbol ga = new Symbol("ga");
-    Face faceGa = new Face(new Symbol[]{ga});
+    Face faceGa = new Face(new Symbol[] {ga});
 
     @Nested
     @DisplayName("constructor")
@@ -54,7 +52,7 @@ public class DiceTest {
         @Test
         @DisplayName("should return the correct numbr of faces given a Dice")
         void getNumberOfFaces_returnsNumberOfFaces_givenDice() {
-            assertThat((new Dice(new Face[]{Face.BLANK, Face.BLANK})).getNumberOfFaces()).isEqualTo(2);
+            assertThat((new Dice(new Face[] {Face.BLANK, Face.BLANK})).getNumberOfFaces()).isEqualTo(2);
         }
     }
 
@@ -63,9 +61,9 @@ public class DiceTest {
     public class GetSymbolsOnFace {
         Symbol failure = new Symbol("failure", "success");
         Symbol menace = new Symbol("menace", "avantage");
-        Face face1 = new Face(new Symbol[]{failure});
-        Face face2 = new Face(new Symbol[]{failure, menace});
-        Dice dice = new Dice(new Face[]{Face.BLANK, face1, face2, Face.BLANK, face1, face2,});
+        Face face1 = new Face(new Symbol[] {failure});
+        Face face2 = new Face(new Symbol[] {failure, menace});
+        Dice dice = new Dice(new Face[] {Face.BLANK, face1, face2, Face.BLANK, face1, face2,});
 
         @Test
         @DisplayName("should return expected list of symbols for an existing given Face")
@@ -89,14 +87,14 @@ public class DiceTest {
         @Test
         @DisplayName("should return a Map which reflects the order of array given in constructor ")
         void getFaces_returnsMap() {
-            Dice dice = new Dice(new Face[]{
-                    Face.BLANK,
-                    faceGa
+            Dice dice = new Dice(new Face[] {
+                Face.BLANK,
+                faceGa
             });
             Map<Integer, Face> result = dice.getFaces();
             assertThat(result)
-                    .containsEntry(0, Face.BLANK)
-                    .containsEntry(1, faceGa);
+                .containsEntry(0, Face.BLANK)
+                .containsEntry(1, faceGa);
         }
 
         @Test

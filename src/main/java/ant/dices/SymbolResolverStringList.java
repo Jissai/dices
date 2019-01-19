@@ -7,9 +7,10 @@ import java.util.stream.Collectors;
 
 public class SymbolResolverStringList implements ISymbolResolver {
 
+    @Override
     public Map<String, Long> resolve(Collection<Symbol> symbols) {
         Map<String, LinkedList<Symbol>> groupedSymbols = symbols.stream()
-                .collect(Collectors.groupingBy(Symbol::getId, Collectors.toCollection(LinkedList::new)));
+            .collect(Collectors.groupingBy(Symbol::getId, Collectors.toCollection(LinkedList::new)));
 
         for (String entry : groupedSymbols.keySet()) {
             LinkedList<Symbol> entrySymbols = groupedSymbols.get(entry);
@@ -24,10 +25,9 @@ public class SymbolResolverStringList implements ISymbolResolver {
         }
 
         Map<String, Long> result = groupedSymbols.entrySet().stream()
-                .filter(entry -> !entry.getValue().isEmpty())
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> Long.valueOf(e.getValue().size())));
+            .filter(entry -> !entry.getValue().isEmpty())
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> Long.valueOf(e.getValue().size())));
 
         return result;
     }
-
 }

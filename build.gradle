@@ -13,15 +13,11 @@ repositories {
 }
 
 checkstyle {
-    toolVersion "7.6.1"
+    toolVersion "8.16"
 }
 
 dependencies {
-    testImplementation(
-            group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.1.0'
-    )
-    testRuntimeOnly(
-            group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.1.0'
-    )
-    testCompile("org.assertj:assertj-core:3.11.1")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    testCompile "org.assertj:assertj-core:3.11.1"
 }
