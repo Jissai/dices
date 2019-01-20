@@ -52,7 +52,7 @@ public class DiceTest {
         @Test
         @DisplayName("should return the correct numbr of faces given a Dice")
         void getNumberOfFaces_returnsNumberOfFaces_givenDice() {
-            assertThat((new Dice(new Face[] {Face.BLANK, Face.BLANK})).getNumberOfFaces()).isEqualTo(2);
+            assertThat((new Dice(Face.BLANK, Face.BLANK)).getNumberOfFaces()).isEqualTo(2);
         }
     }
 
@@ -61,9 +61,9 @@ public class DiceTest {
     public class GetSymbolsOnFace {
         Symbol failure = new Symbol("failure", "success");
         Symbol menace = new Symbol("menace", "avantage");
-        Face face1 = new Face(new Symbol[] {failure});
-        Face face2 = new Face(new Symbol[] {failure, menace});
-        Dice dice = new Dice(new Face[] {Face.BLANK, face1, face2, Face.BLANK, face1, face2,});
+        Face face1 = new Face(failure);
+        Face face2 = new Face(failure, menace);
+        Dice dice = new Dice(Face.BLANK, face1, face2, Face.BLANK, face1, face2);
 
         @Test
         @DisplayName("should return expected list of symbols for an existing given Face")
@@ -87,10 +87,10 @@ public class DiceTest {
         @Test
         @DisplayName("should return a Map which reflects the order of array given in constructor ")
         void getFaces_returnsMap() {
-            Dice dice = new Dice(new Face[] {
+            Dice dice = new Dice(
                 Face.BLANK,
                 faceGa
-            });
+            );
             Map<Integer, Face> result = dice.getFaces();
             assertThat(result)
                 .containsEntry(0, Face.BLANK)

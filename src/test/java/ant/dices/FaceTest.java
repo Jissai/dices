@@ -10,9 +10,9 @@ class FaceTest {
     @DisplayName("should return the symbols present on the face")
     void get_symbols() {
 
-        Face face = new Face(new Symbol[] {
+        Face face = new Face(
             new Symbol("success", "failure"),
-            new Symbol("failure", "success")}
+            new Symbol("failure", "success")
         );
 
         Symbol[] result = face.getSymbols();
