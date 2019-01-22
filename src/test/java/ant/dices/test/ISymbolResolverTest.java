@@ -60,6 +60,15 @@ class ISymbolResolverTest {
             assertThat(result).containsEntry("zo", 1L);
         }
 
+        @Test
+        @DisplayName("should list the critical and add relevant Symbols to the result when dealing with Criticals")
+        void resolve_givenCritical_addSymbols() {
+            Collection<IOpposable> symbols = Arrays.asList(sha);
+            Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
+            assertThat(result).hasSize(2);
+            assertThat(result).containsEntry("sha", 1L);
+            assertThat(result).containsEntry("ga", 1L);
+        }
     }
 
 }

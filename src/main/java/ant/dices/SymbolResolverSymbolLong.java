@@ -1,5 +1,6 @@
 package ant.dices;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
@@ -9,12 +10,16 @@ public class SymbolResolverSymbolLong implements ISymbolResolver {
 
     @Override
     public Map<String, Long> resolve(Collection<IOpposable> symbols) {
-        Map<IOpposable, Long> groupedSymbols = symbols.stream()
+
+        Collection<IOpposable> criticalEnrichedSymbols = enrichListWithCriticalEquivalence(symbols);
+
+        // grouping
+        Map<IOpposable, Long> groupedSymbols = criticalEnrichedSymbols.stream()
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         for (IOpposable key : groupedSymbols.keySet()) {
-            Long currentOccurencies = groupedSymbols.get(key);
-            if (currentOccurencies == null || currentOccurencies <= 0) {
+            Long currentOccurrences = groupedSymbols.get(key);
+            if (currentOccurrences == null || currentOccurrences <= 0) {
                 continue;
             }
 
@@ -23,7 +28,7 @@ public class SymbolResolverSymbolLong implements ISymbolResolver {
 
             if (oppositeOccurencies != null && oppositeOccurencies > 0) {
                 groupedSymbols.put(target, --oppositeOccurencies);
-                groupedSymbols.put(key, --currentOccurencies);
+                groupedSymbols.put(key, --currentOccurrences);
             }
         }
 
@@ -32,6 +37,16 @@ public class SymbolResolverSymbolLong implements ISymbolResolver {
             .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue));
 
         return result;
+    }
+
+    private Collection<IOpposable> enrichListWithCriticalEquivalence(Collection<IOpposable> symbols) {
+        return symbols.stream()
+                .collect(ArrayList::new, (ArrayList<IOpposable> accumulator, IOpposable opposable) -> {
+                    if (opposable instanceof IOpposableEquivalence) {
+                        accumulator.addAll(((IOpposableEquivalence) opposable).getOpposableEquivalence());
+                    }
+                    accumulator.add(opposable);
+                }, ArrayList::addAll);
     }
 
 }
