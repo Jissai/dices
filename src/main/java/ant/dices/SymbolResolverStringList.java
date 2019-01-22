@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 public class SymbolResolverStringList implements ISymbolResolver {
 
     @Override
-    public Map<String, Long> resolve(Collection<Symbol> symbols) {
-        Map<String, LinkedList<Symbol>> groupedSymbols = symbols.stream()
-            .collect(Collectors.groupingBy(Symbol::getId, Collectors.toCollection(LinkedList::new)));
+    public Map<String, Long> resolve(Collection<IOpposable> symbols) {
+        Map<String, LinkedList<IOpposable>> groupedSymbols = symbols.stream()
+            .collect(Collectors.groupingBy(IOpposable::getId, Collectors.toCollection(LinkedList::new)));
 
         for (String entry : groupedSymbols.keySet()) {
-            LinkedList<Symbol> entrySymbols = groupedSymbols.get(entry);
-            for (Symbol item : entrySymbols) {
+            LinkedList<IOpposable> entrySymbols = groupedSymbols.get(entry);
+            for (IOpposable item : entrySymbols) {
                 if (groupedSymbols.containsKey(item.getOpposite())) {
-                    LinkedList<Symbol> oppositeSymbols = groupedSymbols.get(item.getOpposite());
+                    LinkedList<IOpposable> oppositeSymbols = groupedSymbols.get(item.getOpposite());
                     if (oppositeSymbols.poll() != null) {
                         entrySymbols.poll();
                     }
@@ -30,4 +30,5 @@ public class SymbolResolverStringList implements ISymbolResolver {
 
         return result;
     }
+
 }
