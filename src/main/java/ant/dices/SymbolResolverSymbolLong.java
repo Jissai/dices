@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 public class SymbolResolverSymbolLong implements ISymbolResolver {
 
     @Override
-    public Map<String, Long> resolve(Collection<Symbol> symbols) {
-        Map<Symbol, Long> groupedSymbols = symbols.stream()
+    public Map<String, Long> resolve(Collection<IOpposable> symbols) {
+        Map<IOpposable, Long> groupedSymbols = symbols.stream()
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        for (Symbol key : groupedSymbols.keySet()) {
+
+        for (IOpposable key : groupedSymbols.keySet()) {
             Long currentOccurencies = groupedSymbols.get(key);
             if (currentOccurencies == null || currentOccurencies <= 0) {
                 continue;

@@ -22,7 +22,7 @@ public class DiceTest {
         @Test
         @DisplayName("should not fail if constructor is given null")
         void ctor_givenNull() {
-            assertThatCode(() -> new Dice(null)).doesNotThrowAnyException();
+            assertThatCode(() -> new Dice((Face) null)).doesNotThrowAnyException();
         }
 
         @Test
@@ -40,13 +40,13 @@ public class DiceTest {
         @Test
         @DisplayName("should return 0 given a null Dice")
         void getNumberOfFaces_returns0_givenNullDice() {
-            assertThat((new Dice(null)).getNumberOfFaces()).isEqualTo(0);
+            assertThat((new Dice((Face[]) null)).getNumberOfFaces()).isEqualTo(0);
         }
 
         @Test
         @DisplayName("should return 0 given an empty Dice")
         void getNumberOfFaces_returns0_givenEmptyDice() {
-            assertThat((new Dice(null)).getNumberOfFaces()).isEqualTo(0);
+            assertThat((new Dice(new Face[0])).getNumberOfFaces()).isEqualTo(0);
         }
 
         @Test

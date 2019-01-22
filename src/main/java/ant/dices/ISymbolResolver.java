@@ -11,5 +11,5 @@ public interface ISymbolResolver {
      * @param symbols unordered list of Symbols to resolve
      * @return a summary map of each symbol ID paired with their respective number of occurrence in the list
      */
-    Map<String, Long> resolve(Collection<Symbol> symbols);
+    Map<String, Long> resolve(Collection<IOpposable> symbols);
 }
