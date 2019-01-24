@@ -27,12 +27,11 @@ public class AbstractSymbol implements IOpposable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !(o instanceof AbstractSymbol)) {
             return false;
         }
-        AbstractSymbol s = (AbstractSymbol) o;
 
-        return Objects.equals(this.getId(), s.getId());
+        return Objects.equals(this.getId(), ((AbstractSymbol) o).getId());
     }
 
     @Override

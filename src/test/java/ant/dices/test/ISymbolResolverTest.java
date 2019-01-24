@@ -24,6 +24,7 @@ class ISymbolResolverTest {
         Symbol zo = new Symbol("zo", "ga");
         Symbol meu = new Symbol("meu");
         CriticalSymbol sha = new CriticalSymbol("sha", "dock", ga);
+        CriticalSymbol dock = new CriticalSymbol("dock", "sha", zo);
 
         @Test
         @DisplayName("should return unmodified list when given 2 additive symbols")
@@ -69,6 +70,24 @@ class ISymbolResolverTest {
             assertThat(result).containsEntry("sha", 1L);
             assertThat(result).containsEntry("ga", 1L);
         }
+
+        @Test
+        @DisplayName("should list the critical and cancel opposite equivalence Symbols when present")
+        void resolve_given_critical_remove_opposite_equivalence() {
+            Collection<IOpposable> symbols = Arrays.asList(sha, zo);
+            Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
+            assertThat(result).hasSize(1);
+            assertThat(result).containsEntry("sha", 1L);
+        }
+
+        @Test
+        @DisplayName("should cancel opposite Criticals (and equivalences)")
+        void resolve_givena_critical_remove_opposite_critical() {
+            Collection<IOpposable> symbols = Arrays.asList(sha, dock);
+            Map<String, Long> result = new SymbolResolverSymbolLong().resolve(symbols);
+            assertThat(result).hasSize(0);
+        }
+
     }
 
 }
