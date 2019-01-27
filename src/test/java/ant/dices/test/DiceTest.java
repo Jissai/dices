@@ -68,16 +68,16 @@ public class DiceTest {
         @Test
         @DisplayName("should return expected list of symbols for an existing given Face")
         void getSymbolsOfFaces_returns_symbols() {
-            assertThat(dice.getSymbolsOnFace(2)).hasSize(2).containsExactlyInAnyOrder(face2.getSymbols());
-            assertThat(dice.getSymbolsOnFace(3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getSymbols());
+            assertThat(dice.getSymbolsOnFace(2)).hasSize(2).containsExactlyInAnyOrder(face2.getOpposables());
+            assertThat(dice.getSymbolsOnFace(3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getOpposables());
         }
 
         @Test
         @DisplayName("should return the symbols on abs(face % dice.getNumberOfFaces) when given a face beyond limits")
         void getSymbolsOfFaces_returnsSymbols_givenOutOfRange() {
-            assertThat(dice.getSymbolsOnFace(7)).hasSize(1).containsExactlyInAnyOrder(face1.getSymbols());
-            assertThat(dice.getSymbolsOnFace(-3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getSymbols());
-            assertThat(dice.getSymbolsOnFace(-44)).hasSize(2).containsExactlyInAnyOrder(face2.getSymbols());
+            assertThat(dice.getSymbolsOnFace(7)).hasSize(1).containsExactlyInAnyOrder(face1.getOpposables());
+            assertThat(dice.getSymbolsOnFace(-3)).hasSize(0).containsExactlyInAnyOrder(Face.BLANK.getOpposables());
+            assertThat(dice.getSymbolsOnFace(-44)).hasSize(2).containsExactlyInAnyOrder(face2.getOpposables());
         }
     }
 
