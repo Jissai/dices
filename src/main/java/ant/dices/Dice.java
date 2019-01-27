@@ -20,8 +20,8 @@ public class Dice {
         return Collections.unmodifiableMap(this.faces);
     }
 
-    public Collection<Symbol> getSymbolsOnFace(int face) {
+    public Collection<IOpposable> getSymbolsOnFace(int face) {
         int actualFace = Math.round(Math.abs(face) % this.getNumberOfFaces());
-        return Arrays.asList(this.faces.get(actualFace).getSymbols());
+        return Arrays.asList(this.faces.get(actualFace).getOpposables());
     }
 }

@@ -4,13 +4,13 @@ public class Face {
 
     public static final Face BLANK = new Face(new Symbol[0]);
 
-    private final Symbol[] symbols;
+    private final IOpposable[] opposables;
 
-    public Face(Symbol... symbols) {
-        this.symbols = symbols;
+    public Face(IOpposable... opposables) {
+        this.opposables = opposables;
     }
 
-    public Symbol[] getSymbols() {
-        return symbols;
+    public IOpposable[] getOpposables() {
+        return opposables;
     }
 }

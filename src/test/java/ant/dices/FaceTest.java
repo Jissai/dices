@@ -15,7 +15,7 @@ class FaceTest {
             new Symbol("failure", "success")
         );
 
-        Symbol[] result = face.getSymbols();
+        IOpposable[] result = face.getOpposables();
         assertThat(result).containsExactlyInAnyOrder(new Symbol("failure"),
             new Symbol("success"));
     }
@@ -23,7 +23,7 @@ class FaceTest {
     @Test
     @DisplayName("should return empty list if no Symbol defined on the face")
     void get_retunsEmpty() {
-        Symbol[] result = Face.BLANK.getSymbols();
+        IOpposable[] result = Face.BLANK.getOpposables();
         assertThat(result).isEmpty();
     }
 }
