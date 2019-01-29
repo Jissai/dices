@@ -3,7 +3,7 @@ package ant.dices;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class CriticalSymbol extends AbstractSymbol implements IOpposable, IOpposableEquivalence {
+public class CriticalSymbol extends AbstractSymbol implements IOpposableEquivalence {
 
     private IOpposable[] opposableEquivalence;
 

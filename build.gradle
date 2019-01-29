@@ -20,4 +20,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     testCompile "org.assertj:assertj-core:3.11.1"
+    compile 'io.jsondb:jsondb-core:1+'
+    runtime 'org.slf4j:slf4j-simple:1.7.25'
 }
