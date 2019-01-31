@@ -1,7 +1,9 @@
 package ant.dices.dal;
 
+import ant.dices.CriticalSymbol;
 import ant.dices.IOpposable;
 import ant.dices.IOpposableEquivalence;
+import ant.dices.Symbol;
 import ant.dices.dal.schema.SymbolDbSchema;
 import io.jsondb.InvalidJsonDbApiUsageException;
 import io.jsondb.JsonDBTemplate;
@@ -38,7 +40,22 @@ public class SymbolDao {
 
     }
 
-    public void read() {
+    public IOpposable read(String id) {
+        SymbolDbSchema result = this.jsonDBTemplate.findById(id, SymbolDbSchema.class);
+
+        if (result.getEquivalenceIds().size() != 0) {
+            List<IOpposable> listEquivalence = new ArrayList<>();
+            for (String equivalenceId : result.getEquivalenceIds()) {
+                listEquivalence.add(read(equivalenceId));
+            }
+            return new CriticalSymbol(
+                result.getId(),
+                result.getOppositeId(),
+                listEquivalence.toArray(new IOpposable[listEquivalence.size()]));
+
+        } else {
+            return new Symbol(result.getId(), result.getOppositeId());
+        }
     }
 
     public void update() {
@@ -47,5 +64,7 @@ public class SymbolDao {
     public void delete() {
     }
 
-
+    public void drop() {
+        this.jsonDBTemplate.dropCollection(SymbolDbSchema.class);
+    }
 }
