@@ -6,6 +6,7 @@ import ant.dices.IOpposableEquivalence;
 import ant.dices.Symbol;
 import ant.dices.dal.schema.SymbolDbSchema;
 import io.jsondb.InvalidJsonDbApiUsageException;
+import io.jsondb.JsonDBException;
 import io.jsondb.JsonDBTemplate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,12 +19,14 @@ public class SymbolDao {
 
     public SymbolDao(JsonDBTemplate jsonDBTemplate) {
         this.jsonDBTemplate = jsonDBTemplate;
-        try {
-            this.jsonDBTemplate.createCollection(SymbolDbSchema.class);
-        } catch (InvalidJsonDbApiUsageException e) {
-        }
+        this.createDb();
     }
 
+    /**
+     * Given a list of Symbols, try to find matching pairs of opposite Symbols and remove them from the final result.
+     *
+     * @param opposable unordered list of Symbols to resolve
+     */
     public void upsert(IOpposable opposable) {
 
         List<String> listIds = new ArrayList<>();
@@ -43,18 +46,48 @@ public class SymbolDao {
         return fromSchema(result);
     }
 
-    public Collection<IOpposable> list(){
-        List<SymbolDbSchema> results =  this.jsonDBTemplate.findAll(SymbolDbSchema.class);
+    public Collection<IOpposable> list() {
+        List<SymbolDbSchema> results = this.jsonDBTemplate.findAll(SymbolDbSchema.class);
         return results.stream().map(result -> this.fromSchema(result)).collect(Collectors.toList());
     }
 
-    public void delete(String id) {
-        SymbolDbSchema result = this.jsonDBTemplate.findById(id, SymbolDbSchema.class);
-        this.jsonDBTemplate.remove(result, SymbolDbSchema.class);
+    /**
+     * Remove a {@link SymbolDbSchema} from the collection in DB.
+     *
+     * @param id the primary key of the symbol to remove.
+     * @throws JsonDBException if the given id is still referenced by at least another Symbol.
+     */
+    public void delete(String id) throws JsonDBException {
+
+        List<SymbolDbSchema> references = this.jsonDBTemplate.findAll(SymbolDbSchema.class).stream()
+            .filter(sc -> sc.getEquivalenceIds().contains(id))
+            .limit(1)
+            .collect(Collectors.toList());
+
+        if (references.isEmpty()) {
+            SymbolDbSchema result = this.jsonDBTemplate.findById(id, SymbolDbSchema.class);
+            this.jsonDBTemplate.remove(result, SymbolDbSchema.class);
+        } else {
+            throw new JsonDBException(String.format("Deletion of id: %s is forbidden. It is still referenced by id: %s", id, references.get(0).getId()));
+        }
     }
 
-    public void drop() {
+    /**
+     * Destroy the collection used to store {@link SymbolDbSchema}.
+     */
+    public void dropDb() {
         this.jsonDBTemplate.dropCollection(SymbolDbSchema.class);
+    }
+
+    /**
+     * Create an empty collection to store {@link SymbolDbSchema}.
+     */
+    public void createDb() {
+        try {
+            this.jsonDBTemplate.createCollection(SymbolDbSchema.class);
+        } catch (InvalidJsonDbApiUsageException e) {
+            // no operation
+        }
     }
 
     private IOpposable fromSchema(SymbolDbSchema input) {

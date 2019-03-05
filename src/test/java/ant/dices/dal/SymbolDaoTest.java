@@ -5,12 +5,16 @@ import static org.assertj.core.api.Assertions.*;
 import ant.dices.CriticalSymbol;
 import ant.dices.IOpposable;
 import ant.dices.Symbol;
+import io.jsondb.JsonDBException;
 import java.util.Collection;
 import org.junit.jupiter.api.*;
 
 class SymbolDaoTest {
 
     SymbolDao dao;
+    IOpposable symbol = new Symbol("id", "opposite");
+    IOpposable equivalence = new Symbol("opposite", "id");
+    IOpposable critical = new CriticalSymbol("crit-id", "crit-opposite", equivalence);
 
     @BeforeEach
     void setUp() {
@@ -19,13 +23,10 @@ class SymbolDaoTest {
 
     @AfterEach
     void tearDown() {
-        dao.drop();
+        dao.dropDb();
     }
 
     protected void createDataSet() {
-        IOpposable symbol = new Symbol("id", "opposite");
-        IOpposable equivalence = new Symbol("opposite", "id");
-        IOpposable critical = new CriticalSymbol("crit-id", "crit-opposite", equivalence);
         dao = new SymbolDao(DbAccess.test());
         dao.upsert(symbol);
         dao.upsert(critical);
@@ -33,7 +34,7 @@ class SymbolDaoTest {
 
     @Nested
     @DisplayName("Upsert")
-    public class Create {
+    public class Upsert {
 
         @Test
         @DisplayName("should write non-existing symbol in DB then read it without loss")
@@ -74,35 +75,56 @@ class SymbolDaoTest {
         }
 
         @Test
-        @DisplayName("should list ")
+        @DisplayName("should list every Symbol in DB")
         void list_retrieve_every_element_from_db() {
             Collection<IOpposable> results = dao.list();
             assertThat(results).hasSize(3);
         }
+
+        @Test
+        @DisplayName("should return empty array if no symbol in DB ")
+        void list_retrieve_empty_array_from_db() {
+            dao.dropDb();
+            dao.createDb();
+            Collection<IOpposable> results = dao.list();
+            assertThat(results).hasSize(0);
+        }
     }
 
-//    @Nested
-//    @DisplayName("Remove")
-//    protected class Remove {
-//        SymbolDao dao;
-//
-//        @BeforeEach
-//        void setUp() {
-//            createDataSet();
-//        }
-//
-//        @Test
-//        @DisplayName("should remove existing symbol in DB")
-//        void remove_existing_symbol_in_db() {
-//
-//        }
-//
-//        @Test
-//        @DisplayName("should remove existing CriticalSymbol in DB. Leave references")
-//        void remove_existing_CriticalSymbol_in_db() {
-//
-//        }
-//
-//    }
+    @Nested
+    @DisplayName("Remove")
+    protected class Remove {
+        @BeforeEach
+        void setUp() {
+            createDataSet();
+        }
+
+        @Test
+        @DisplayName("should remove existing symbol in DB")
+        void remove_existing_symbol_in_db() {
+            dao.delete("id");
+            Collection<IOpposable> results = dao.list();
+            assertThat(results).hasSize(2).containsExactlyInAnyOrder(equivalence, critical);
+        }
+
+        @Test
+        @DisplayName("should remove existing CriticalSymbol in DB. Leave references")
+        void remove_existing_CriticalSymbol_in_db() {
+            dao.delete("crit-id");
+            Collection<IOpposable> results = dao.list();
+            assertThat(results).hasSize(2).containsExactlyInAnyOrder(symbol, equivalence);
+        }
+
+        @Test
+        @DisplayName("should throw if trying to delete referenced Symbol in DB. Leave references")
+        void remove_existing_referenced_Symbol_in_db() {
+            Throwable thrown = catchThrowable(() -> dao.delete("opposite"));
+            assertThat(thrown)
+                .isInstanceOf(JsonDBException.class)
+                .hasMessageMatching("^Deletion of id.*It is still referenced by id.*$");
+            Collection<IOpposable> results = dao.list();
+            assertThat(results).hasSize(3).containsExactlyInAnyOrder(symbol, equivalence, critical);
+        }
+    }
 
 }
